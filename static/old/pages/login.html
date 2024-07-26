@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Log in</title>
+    <link rel="stylesheet" href="../assets/css/login.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../aos/aos.css">
+  
+
+
+</head>
+
+<body>
+    <div class="container overflow-hidden">
+
+        <h1 class="text-center mt-3 text-primary" data-aos="fade-right" data-aos-duration="1500">Log in</h1>
+        <p class="text-center mb-3" data-aos="fade-left" data-aos-duration="1000">You can subscribe some books with login</p>
+    
+        <div class="row m-0 p-0">
+            <div class="fix-di mb-5 col-10 col-md-4 px-5 py-3 mx-auto" data-aos="fade-up" data-aos-duration="1000">
+                <form >
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label my-3 c">User name</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            name="username">
+                        <div id="emailHelp" class="form-txt mt-2 mb-3">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label my-3">Password</label>
+                        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label mb-3" for="exampleCheck1">Remember me</label>
+                    </div>
+                    <div class="row">
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <a href="./library.html" class="btn btn-light">Submit</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+        <a href="../index.html" class="back-to-top d-flex bg-primary align-items-center justify-content-center active">
+            <img src="../assets/img/icons8-house-50.png"  width="30px" alt="">
+        </a>
+    </div>
+    <script src="../aos/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 700
+    });
+  </script>
+</body>
+
+</html>

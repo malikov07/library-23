@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<script>
+
+    </script>
+<div class="container overflow-hidden">
+
+    <section id="services" class="services-mf pt-5 route">
+        <div class="container">
+            <a href="{% url 'library' %}"><button class="btn btn-primary mb-3 mt-3"><i
+                class="bi bi-arrow-left h2"></i></button></a>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="title-box text-center" data-aos="fade-up" data-aos-duration="1000">
+                        <h3 class="title-a" data-aos="fade-right" data-aos-duration="2000">
+                            Sinflar
+                        </h3>
+                        <p class="subtitle-a" data-aos="fade-left" data-aos-duration="1000">
+                            Sinflarga oid bo'limlardan birini tanlashingiz mumkin
+                        </p>
+                        <div class="line-mf"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="row">
+        <div class="col-md-6 mx-auto mb-3" data-aos="zoom-out-up">
+            <div class="row">
+                {% for c in classes %}
+                    {% if not c.typec %}
+                        <a href="{% url 'class' c.id %}" class="btn btn-primary col-10 col-md-5 mb-2 mx-auto">{{c.number}}-sinf</a>
+                    {% else %}
+                        <a href="{% url 'class' c.id %}" class="btn btn-primary col-10 col-md-5 mb-2 mx-auto">{{c.number}}{{c.typec}}-sinf</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

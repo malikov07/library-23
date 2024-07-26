@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+    <link rel="stylesheet" href="../main.css">
+
+    <!-- Template Main CSS File -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+
+    <style>
+        button{
+            border-radius: 5px !important;
+            color: hsl(213, 100%, 58%) !important;
+            border-color: hsl(213, 100%, 58%) !important; 
+        }
+        button:hover{
+            color: white !important;
+            background: hsl(213, 100%, 58%) !important;
+        }
+        #html5-qrcode-anchor-scan-type-change{
+            color:hsl(213, 100%, 58%) !important;
+            text-decoration: none !important;
+        }
+
+        /* .html5-qrcode-element{
+            border-radius: 5px;
+            color: hsl(213, 100%, 58%);
+            border-color: hsl(213, 100%, 58%); 
+        }
+        .html5-qrcode-element:hover{
+            color: white;
+            background-color: hsl(213, 100%, 58%);
+        } */
+
+    </style>
+</head>
+
+<body>
+
+    <a href="../index.html" class="back-to-top d-flex bg-primary align-items-center justify-content-center active">
+        <img src="../assets/img/icons8-house-50.png"  width="30px" alt="">
+    </a>
+
+
+    <div class="container">
+        <div id="you-qr-result" class=" col-md-5 mx-auto text-center mt-2 alert alert-info" role="alert"></div>
+        <div style="display:flex; justify-content: center;">
+            <div id="my-qr-reader" class=" col-12 col-md-5 mx-auto " >
+    
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="./app.js"></script>
+    <script>
+        function domReady(fn){
+            if(document.readyState === 'complete' || document.readyState === 'interactive'){
+                setTimeout(fn,1)
+            }else{
+                document.addEventListener("DOMContentLoaded",fn)
+            }
+        }
+
+        domReady(function(){
+            let myqr = document.getElementById('you-qr-result')
+            let lastResult,countResults = 0;
+
+            function onScanSuccess(decodeText,decodeResult){
+                if(decodeText !== lastResult){
+                    ++countResults;
+                    lastResult = decodeText
+
+                    
+                    myqr.innerHTML = `you scan ${countResults} : ${decodeText}`
+                }
+            }
+
+            let html5scanner = new Html5QrcodeScanner(
+                "my-qr-reader",{fps:10,qrbox:200}
+            )
+            html5scanner.render(onScanSuccess)
+        })
+
+    </script>
+
+</body>
+
+</html>

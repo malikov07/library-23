@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<script>
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+<body>
+    <div class="container mt-5">
+        
+        <button class="btn btn-primary mb-3" onclick="goBack()"><i
+            class="bi bi-arrow-left h2"></i></button>
+        <div class="col-md-5 bg-light p-4 rounded mx-auto">
+            <h1 class="mb-4">{% if update %}Update{% else %}Add{% endif %} Book</h1>
+
+            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                {% if text %}
+                <div class="alert alert-info" role="alert">
+                    <h2 class="h4">{{ text }}</h2>
+                </div>
+                {% endif %}
+
+                {% if update %}
+                <label for="serial_id">Serial ID</label>
+                <input type="text" class="form-control" id="serial_id" name="serial_id"
+                    value="{{ returned_data.serial_id }}" readonly>
+                {% else %}
+                <div class="form-group">
+                    <label for="serial_id">Serial ID</label>
+                    <input type="text" class="form-control" id="serial_id" name="serial_id" value="{{ scanned_result }}"
+                        readonly>
+                </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="title">Name</label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ returned_data.title }}"
+                        required>
+                    <div class="invalid-feedback">
+                        Please enter the book title.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" name="description"
+                        value="{{ returned_data.description }}">
+                </div>
+
+                <div class="form-group">
+                    {% if update %}
+                    <label for="publish_date">Old date:{{returned_data.publish_date}}</label><br>
+                    {% endif %}
+                    <label for="publish_date">Publish Date</label>
+                    <input type="date" class="form-control" id="publish_date" name="publish_date"
+                        value="{{ returned_data.publish_date.value }}" {% if not update %}required{% endif %}>
+                    <div class="invalid-feedback">
+                        Please enter the publish date.
+                    </div>
+                </div>
+
+
+                <div class="form-group mt-3">
+                    <label for="image">Image</label>
+                    <input type="file" class="form-control-file" id="image" name="image" value="{{ book_image }}" {% if not update %}required{% endif %}>
+                    <div class="invalid-feedback">
+                        Please upload an image.
+                    </div>
+                </div>
+                {% if student_id and return_date and class_id %}
+                <input type="hidden" name="student_id" value="{{student_id}}">
+                <input type="hidden" name="return_date" value="{{return_date}}">
+                <input type="hidden" name="class_id" value="{{class_id}}">
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary mt-3">{% if update %}Update{% else %}Add Book{% endif %}</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+
+</html>
+{% endblock %}

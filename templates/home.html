@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<a href="{% url 'home' %}">
+    <div id="hero" class="hero route bg-image" style="background-image: url({% static 'old/assets/img/bg.jpg' %})"> 
+</a>
+<div class="overlay-itro"></div>
+<div class="hero-content display-table">
+    <div class="table-cell">
+        <div class="container" data-aos="fade-up" data-aos-duration="1000">
+            <h1 class="hero-title hea mb-4 " data-aos="fade-rihgt" data-aos-duration="1000">23-Maktab kutubxonasi
+            </h1>
+            <p class="hero-subtitle mb-4" data-aos="fade-left" data-aos-duration="1000"><span class="typed"
+                    data-typed-items="Kutubxona - ziyo bulog'i,Insonning eng katta boyligi bu - ilm,zero ilm izlashdan charchamang"></span>
+            </p>
+
+            <a href="{% url 'library' %}" class="btn btn-outline-info px-5 py-2" data-aos="fade-up"
+                data-aos-duration="1000">Kutubxona</a>
+            
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div></div>
+{% endblock %}

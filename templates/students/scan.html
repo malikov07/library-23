@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'old/assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'old/main.css' %}">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'old/assets/css/style.css' %}" rel="stylesheet">
+
+    <style>
+        button {
+            border-radius: 5px !important;
+            color: hsl(213, 100%, 58%) !important;
+            border-color: hsl(213, 100%, 58%) !important;
+        }
+
+        button:hover {
+            color: white !important;
+            background: hsl(213, 100%, 58%) !important;
+        }
+
+        #html5-qrcode-anchor-scan-type-change {
+            color: hsl(213, 100%, 58%) !important;
+            text-decoration: none !important;
+        }
+    </style>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</head>
+
+<body>
+
+    
+
+    
+    <div id="book-info" class="col-md-5 mx-auto text-center mt-2"></div>
+
+    <div id="date-return" class="col-md-5 mx-auto text-center mt-2"></div>
+
+    <div class="container">
+        <button class="btn btn-outline-primary mb-3" onclick="goBack()"><i
+            class="bi bi-arrow-left h2"></i></button>
+        <div class="container">
+    </div>
+        
+        <div id="you-qr-result" class="col-md-5 mx-auto text-center mt-2 alert alert-info" role="alert"></div>
+        <div style="display:flex; justify-content: center;">
+            <div id="my-qr-reader" class="col-12 col-md-5 mx-auto"></div>
+        </div>
+    </div>
+
+    <script src="{% static 'old/scaner/app.js' %}"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function domReady(fn) {
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                setTimeout(fn, 1);
+            } else {
+                document.addEventListener("DOMContentLoaded", fn);
+            }
+        }
+
+        domReady(function () {
+            let bookInfo = document.getElementById('book-info');
+            let myqr = document.getElementById('you-qr-result');
+            let lastResult, countResults = 0;
+            const urlParams = new URLSearchParams(window.location.search);
+            const functionValue = urlParams.get('function');
+            const dateReturnDiv = document.getElementById('date-return');
+
+            if (functionValue === "newrental") {
+                dateReturnDiv.innerHTML = `<input type="date" name="return_date" id="returnDate" required>`;
+                const returnDateInput = document.getElementById('returnDate');
+                returnDateInput.addEventListener('change', startScanning);
+            } else {
+                startScanning();
+            }
+
+            function startScanning() {
+                let html5scanner = new Html5QrcodeScanner(
+                    "my-qr-reader", { fps: 10, qrbox: 200 }
+                );
+                html5scanner.render(onScanSuccess);
+            }
+
+            function onScanSuccess(decodeText, decodeResult) {
+                if (decodeText !== lastResult) {
+                    ++countResults;
+                    lastResult = decodeText;
+
+                    myqr.innerHTML = `You scanned ${countResults}: ${decodeText}`;
+
+                    let returnDateValue = null;
+                    let student_id = null;
+                    if (functionValue === "newrental") {
+                        student_id = urlParams.get("student_id")
+                        const returnDateInput = document.getElementById('returnDate');
+                        returnDateValue = returnDateInput ? returnDateInput.value : null;
+                    }
+
+                    fetch("{% url 'scan' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({
+                            result: decodeText,
+                            function: functionValue,
+                            return_date: returnDateValue,
+                            student_id
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        if (data.book_info) {
+                            bookInfo.innerHTML = `
+                                <h4>Bu kitob avvaldan mavjud</h4>
+                                <h5>Book Information</h5>
+                                <p><strong>Serial_id:</strong> ${data.book_info.serial_id}</p>
+                                <p><strong>Title:</strong> ${data.book_info.title}</p>
+                                <p><strong>Description:</strong> ${data.book_info.description}</p>
+                                <p><strong>Publication Date:</strong> ${data.book_info.publish_date}</p>`;
+                        } else if (data.redirect) {
+                            window.location.href = data.redirect_url;
+                        } else if (data.bookDoesNotExist) {
+                            bookInfo.innerHTML = 
+                                `<h4 style="color:red;">Bunday serial_id ga ega kitob mavjud emas</h4><br>
+                                <a href="{{ request.META.HTTP_REFERER }}">Go back</a><br>`;
+                        } else if (data.rentalAdded) {
+                            bookInfo.innerHTML = `
+                                <h4>Kitob o'quvchiga biriktirildi <a href="{% url 'rentals' %}">obunalarni ko'rish</a></h4>
+                            `;
+                            window.location.href = data.redirect_url;
+                        } else if (data.noReturnDate) {
+                            bookInfo.innerHTML = `
+                                <h4>Qaytariladigan sana kiritlmadi</h4>`
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                }
+            }
+        });
+    </script>
+
+</body>
+
+{% endblock %}

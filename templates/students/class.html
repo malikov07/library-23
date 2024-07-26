@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+
+@media (max-width: 767px) {
+        /* .desktop-layout {
+            display: none;
+        }
+        
+        .mobile-layout {
+            display: block;
+        } */
+
+        .table th, .table td {
+            font-size: 12px;
+            padding: 0.3rem;
+            text-align: center; /* Center align text in th and td */
+        }
+
+    }
+
+</style>
+<script>
+
+</script>
+<div style="background-color: rgb(233, 233, 233);">
+
+    
+    <div class="container overflow-hidden">
+        <a href="{% url 'classes' %}"><button class="btn btn-primary mb-3 mt-3"><i
+            class="bi bi-arrow-left h2"></i></button></a>
+        <div class="row mb-3">
+            <div class="col-sm-12">
+                <div class="title-box text-center" data-aos="fade-up" data-aos-duration="1000">
+                    <h3 class="title-a mt-3" data-aos="fade-right" data-aos-duration="2000">
+                        {{sinf}}-sinf
+                    </h3>
+                    <p class="subtitle-a" data-aos="fade-left" data-aos-duration="1000">
+                        {{sinf}}-sinf o'quchilaridan kutubxonaga azo qo'shish 
+                    </p>
+                    <div class="line-mf"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 px-0">
+                <div class="p-3">
+                    <div class="accordion  shadow-lg mb-4" id="accordionExample">
+                        {% for student, rentals in students_with_books %}
+                        <div class="accordion-item" id="item-{{ student.id }}">
+                            <h2 class="accordion-header" id="heading-{{ student.id }}">
+                                <button style="background-color: rgb(127, 202, 255);" class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ student.id }}" aria-expanded="{{ forloop.first|yesno:'true,false' }}" aria-controls="collapse-{{ student.id }}">
+                                    <strong>{{ forloop.counter }}</strong> - {{ student.first_name }} {{ student.last_name }}
+                                </button>
+                            </h2>
+                            <div id="collapse-{{ student.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading-{{ student.id }}" data-bs-parent="#accordionExample">
+                                <div class="accordion-body bg-light">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <!-- Display student details here -->
+                                            <p>First name: {{ student.first_name }}</p>
+                                            <p>Last name: {{ student.last_name }}</p>
+                                            <p>Third name: {{ student.third_name }}</p>
+                                            <p>Birth date: {{ student.birth_date }}</p>
+                                            <p>Phone number: {{ student.phone_number }}</p>
+                                            <p>Address: {{ student.address }}</p>
+                                            <form method="get" action="{% url 'scan' %}" class="mb-2">
+                                                <input type="hidden" name="function" value="newrental">
+                                                <input type="hidden" name="student_id" value="{{student.id}}">
+                                                <button type="submit" class="col-12 btn btn-success">Add book</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <div class="table-responsive">
+                                                <table class="table border table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Book title</th>
+                                                            <th scope="col">Book Id</th>
+                                                            <th scope="col">Return date</th>
+                                                            <th scope="col">Created date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for rental in rentals %}
+                                                        <tr>
+                                                            <th scope="row">{{ forloop.counter }}</th>
+                                                            <td>{{ rental.book.title|slice:":25" }}{% if rental.book.title|length > 25 %}...{% endif %}</td>
+                                                            <td>{{ rental.book.id }}</td>
+                                                            <td>{{ rental.return_date }}</td>
+                                                            <td>{{ rental.created_date }}</td>
+                                                        </tr>
+                                                        {% empty %}
+                                                        <tr>
+                                                            <td colspan="5">No borrowed books</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                    
+                                            {% if rentals %}
+                                            <form method="post" action="{% url 'endrental' %}" class="d-flex justify-content-between align-items-center mt-3">
+                                                {% csrf_token %}
+                                                <select name="rental_id" id="rentas" class="form-select me-2">
+                                                    {% for rental in rentals %}
+                                                    <option value="{{rental.id}}">{{ rental.book.title|slice:":25" }}{% if rental.book.title|length > 25 %}...{% endif %}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <input type="hidden" value="{{class_id}}" name="class_id">
+                                                <button type="submit" class="btn btn-danger">Obunani&nbsp;o'chirish</button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var accordionItems = document.querySelectorAll('.accordion-item');
+        
+        // Restore state from localStorage
+        accordionItems.forEach(function(item) {
+            var collapseElement = item.querySelector('.accordion-collapse');
+            var itemId = item.id;
+            var state = localStorage.getItem(itemId);
+    
+            if (state === 'open') {
+                collapseElement.classList.add('show');
+            } else {
+                collapseElement.classList.remove('show');
+            }
+        });
+    
+        // Listen for collapse events to store the state
+        accordionItems.forEach(function(item) {
+            var collapseElement = item.querySelector('.accordion-collapse');
+            collapseElement.addEventListener('shown.bs.collapse', function() {
+                localStorage.setItem(item.id, 'open');
+            });
+            collapseElement.addEventListener('hidden.bs.collapse', function() {
+                localStorage.setItem(item.id, 'closed');
+            });
+        });
+    });
+</script>
+
+{% endblock %}

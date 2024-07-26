@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .table-container {
+        max-height: 400px; /* Adjust the height as needed */
+        overflow-y: auto;  /* Allows vertical scrolling */
+        overflow-x: auto;  /* Allows horizontal scrolling */
+        margin-top: 20px;
+    }
+    @media (max-width: 576px) {
+        .books-table th, .books-table td {
+            font-size: 14px;
+        }
+    }
+</style>
+<div class="container mt-5 bg-light p-3 rounded">
+    <a style="color: white;" href="{% url 'library' %}"><button class="btn btn-primary mb-3"><i class="bi bi-arrow-left h2"></i></button></a>
+    <h1 class="mb-4">Books Being Read</h1>
+    <div class="table-container">
+        <table class="table table-striped books-table">
+            <thead>
+                <tr>
+                    <th>Kitob</th>
+                    <th>Soni</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i, j in data.items %}
+                    <tr>
+                        <td>{{ i }}</td>
+                        <td>{{ j }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}

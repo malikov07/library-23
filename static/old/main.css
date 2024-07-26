@@ -1,0 +1,37 @@
+.logi{
+    width: 70px;
+    height: 70px;
+    background-image: url("./assets/img/logi.png");
+    background-size: cover;
+    
+
+}
+.image{
+   padding: 24px;
+}
+.my_image{
+    /* position: relative; */
+    width: 100% !important;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+}
+@media screen and (max-width:500px){
+    .hea{
+        font-size: 30px !important;
+    }
+    h3{
+        font-size:30px !important;
+    }
+    .title-box{
+        margin-bottom: 25px !important;
+    }
+    .my_image{
+        background-size: cover;
+        background-position: center;
+    }
+}
+.overlay-mf{
+    width: 100%;
+    
+}

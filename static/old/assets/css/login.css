@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.fix-di{
+    height: auto;
+    background-color: #0078ff;
+    border-radius: 20px;
+}
+h1{
+    color: #0078ff;
+    font-weight: 900;
+}
+p{
+    color: #4f89ca;
+}
+.form-txt{
+    color: rgb(222, 222, 222);
+    font-size: 14px;
+}
+label{
+    color: white ;
+}

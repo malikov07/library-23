@@ -1,0 +1,321 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>23-maktab kutubxonasi</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/logo.png" rel="icon">
+    <link href="assets/img/logo.png" rel="apple-touch-icon">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'old/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'old/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'old/assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'old/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'old/main.css' %}">
+    <link rel="stylesheet" href="{% static 'old/aos/aos.css' %}">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'old/assets/css/style.css' %}" rel="stylesheet">
+
+    <style>
+        .icon {
+            color: white;
+            font-size: 30px !important;
+        }
+
+        .icon:hover {
+            color: rgb(255, 0, 0);
+            border-bottom: 3px;
+            border-color: white;
+
+        }
+
+        .navbar-mobile {
+            z-index: 100000000000000000000000000000000000;
+        }
+
+        .navbar-mobile {
+            z-index: 100000000000000000000000000000000000;
+        }
+    </style>
+    <!-- =======================================================
+  * Template Name: DevFolio - v4.10.0
+  * Template URL: https://bootstrapmade.com/devfolio-bootstrap-portfolio-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body style="background-color: rgb(233, 233, 233);">
+    
+
+
+        <nav style="background-color: black !important; color: white !important;"
+            class="navbar navbar-expand-lg bg-body-tertiary " data-bs-theme="dark">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <div class="logi"></div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto" style="color: white !important;">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="#">Asosiy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Biz haqimizda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'library' %}">Kutubxona</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">Bog'lanish</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"><a href="{% url 'logout' %}">
+                        <li><i class="bi bi-box-arrow-left icon"></i></li></a></a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+
+        <div class="index" style="z-index: -1000000000000;">
+            {% block content %}
+
+            {% endblock content %}
+        </div>
+
+
+
+
+
+
+        <main id="main" class="mt-5">
+            <div class="continer overflow-hidden">
+                <!-- ======= About Section ======= -->
+                <!-- <section id="about" class="about-mf sect-pt4 route">
+                    <div class="container my-2">
+                        <div class="row ">
+                            <div class="title-box text-center" data-aos="fade-up" data-aos-duration="1000">
+                                <h3 class="title-a" data-aos="fade-right" data-aos-duration="2000">
+                                    Biz haqimizda
+                                </h3>
+                                <p class="subtitle-a" data-aos="fade-left" data-aos-duration="1000">
+                                    Biz haqimizdagi ma'lumotlar shu sahifada aks etadi <a href="#"><strong>Batafsil</strong></a>
+                                </p>
+                                <div class="line-mf"></div>
+                            </div>
+                            <div class="container">
+                                <div class="row justify-content-around">
+                                    <div class="col-12 col-md-6" data-aos="fade-right" data-aos-duration="1000">
+                                        <h5 class="p-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus fugiat
+                                            alias,
+                                            voluptatem
+                                            eum nihil saepe sed autem libero cupiditate voluptas velit minus optio facilis
+                                            delectus incidunt
+                                            repellat porro id magnam nostrum nesciunt, odit animi est molestiae quam. Quis iste
+                                            nihil minus
+                                            laboriosam, earum voluptate dolorum accusamus? Perferendis doloremque minus ipsa
+                                            ducimus rerum a ut,
+                                            aperiam beatae ratione iure quaerat.</h5>
+                                    </div>
+                                    <div class="col-12 col-md-4 image" data-aos="fade-right" data-aos-duration="2000"
+                                        data-aos-delay="300">
+                                        <img src="{% static 'old/./assets/img/bg2.jpg' %}" class="my_image" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div> -->
+
+
+
+                <div class="container overflow-hidden mt-5">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="title-box text-center" data-aos="fade-up" data-aos-duration="1000">
+                                <h3 class="title-a" data-aos="fade-right" data-aos-duration="2000">
+                                    Bog'lanish
+                                </h3>
+                                <p class="subtitle-a" data-aos="fade-left" data-aos-duration="1000">
+                                    o'zingiz gaqingizda ma'lumot kiritish orqali biz bilan bog'laning
+                                </p>
+                                <div class="line-mf"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <section id="contact" class="paralax-mf footer-paralax bg-image sect-mt4 route pt-0 mt-0"
+                    style="background-image: url(assets/img/overlay-bg.jpg)">
+                    <div class="container overflow-hidden">
+                        <!-- <div class="overlay-mf"></div> -->
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="contact-mf">
+                                        <div id="contact" class="box-shadow-full">
+                                            <div class="row">
+                                                <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
+                                                    <div class="title-box-2">
+                                                        <h5 class="title-left">
+                                                            Xabar yuborish uchun
+                                                        </h5>
+                                                    </div>
+                                                    <div>
+                                                        <form action="forms/contact.php" method="post" role="form"
+                                                            class="php-email-form">
+                                                            <div class="row">
+                                                                <div class="col-md-12 mb-3">
+                                                                    <div class="form-group">
+                                                                        <input type="text" name="name"
+                                                                            class="form-control" id="name"
+                                                                            placeholder="Ismingiz" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 mb-3">
+                                                                    <div class="form-group">
+                                                                        <input type="email" class="form-control"
+                                                                            name="email" id="email"
+                                                                            placeholder="Emailingiz" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <textarea class="form-control" name="message"
+                                                                            rows="5" placeholder="Xabar"
+                                                                            required></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-center my-3">
+                                                                    <div class="loading">Loading</div>
+                                                                    <div class="error-message"></div>
+                                                                    <div class="sent-message">Your message has been
+                                                                        sent. Thank you!
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-center">
+                                                                    <button type="submit"
+                                                                        class="button button-a button-big button-rouded">Xabarni
+                                                                        yuborish</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" data-aos="fade-right" data-aos-duration="2000">
+                                                    <div class="title-box-2 pt-4 pt-md-0">
+                                                        <h5 class="title-left">
+                                                            Manzil
+                                                        </h5>
+                                                    </div>
+                                                    <div class="more-info">
+                                                        <p class="lead">
+                                                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                            Facilis dolorum
+                                                            dolorem soluta quidem
+                                                            expedita aperiam aliquid at.
+                                                            Totam magni ipsum suscipit amet? Autem nemo esse laboriosam
+                                                            ratione
+                                                            nobis
+                                                            mollitia inventore?
+                                                        </p>
+                                                        <ul class="list-ico">
+                                                            <li><span class="bi bi-geo-alt"></span>Toshkent viloyati
+                                                                &nbsp; Angren
+                                                                &nbsp;Qorabog'soy
+                                                                ko'cha
+                                                                23-maktab</li>
+                                                            <li><span class="bi bi-phone"></span> +998(99)123-45-67</li>
+                                                            <li><span class="bi bi-envelope"></span> maktab@gmail.com
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="socials">
+                                                        <ul>
+                                                            <li><a href=""><span class="ico-circle"><i
+                                                                            class="bi bi-facebook"></i></span></a></li>
+                                                            <li><a href=""><span class="ico-circle"><i
+                                                                            class="bi bi-instagram"></i></span></a></li>
+                                                            <li><a href=""><span class="ico-circle"><i
+                                                                            class="bi bi-telegram"></i></span></a></li>
+                                                            <li><a href=""><span class="ico-circle"><i
+                                                                            class="bi bi-youtube"></i></span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section><!-- End Contact Section -->
+                <!-- ======= Contact Section ======= -->
+
+
+
+
+
+
+
+
+                <!-- ======= Footer ======= -->
+                <footer>
+                    <div class="container overflow-hidden">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="copyright-box">
+                                    <p class="copyright">&copy; Copyright <strong>23maktab</strong>. All Rights Reserved
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer><!-- End  Footer -->
+
+                <div id="preloader"></div>
+                <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                        class="bi bi-arrow-up-short"></i></a>
+
+                <!-- Vendor JS Files -->
+                <script src="{% static 'old/assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+                <script src="{% static 'old/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+                <script src="{% static 'old/assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+                <script src="{% static 'old/assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+                <script src="{% static 'old/assets/vendor/typed.js/typed.min.js' %}"></script>
+                <script src="{% static 'old/assets/vendor/php-email-form/validate.js' %}"></script>
+                <script src="{% static 'old/aos/aos.js' %}"></script>
+                <script>
+                    AOS.init({
+                        duration: 700
+                    });
+                </script>
+
+                <!-- Template Main JS File -->
+                <script src="{% static 'old/assets/js/main.js' %}"></script>
+
+</body>
+
+</html>
