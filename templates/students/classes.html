@@ -32,7 +32,7 @@
             <div class="row">
                 {% for c in classes %}
                     {% if not c.typec %}
-                        <a href="{% url 'class' c.id %}" class="btn btn-primary col-10 col-md-5 mb-2 mx-auto">{{c.number}}-sinf</a>
+                        <a href="{% url 'class' c.id %}" class="btn btn-primary col-10 col-md-5 mb-2 mx-auto">{{c}}-sinf</a>
                     {% else %}
                         <a href="{% url 'class' c.id %}" class="btn btn-primary col-10 col-md-5 mb-2 mx-auto">{{c.number}}{{c.typec}}-sinf</a>
                     {% endif %}

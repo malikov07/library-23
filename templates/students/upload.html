@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Photo</title>
+</head>
+<body>
+    <h2>Upload Photo</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+
+    <h3>Take Photo</h3>
+    <video id="video" width="320" height="240" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="320" height="240"></canvas>
+</body>
+
+<script>
+    // JavaScript for taking photo
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const snap = document.getElementById('snap');
+
+    // Get access to the camera
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+        });
+    }
+
+    // Trigger photo take
+    snap.addEventListener("click", function() {
+        context.drawImage(video, 0, 0, 320, 240);
+        canvas.toBlob(function(blob) {
+            const formData = new FormData();
+            formData.append('image', blob, 'photo.png');
+            fetch('/upload/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/success/';
+                }
+            });
+        }, 'image/png');
+    });
+</script>
+</html>

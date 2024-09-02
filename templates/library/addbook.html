@@ -15,7 +15,7 @@
         <button class="btn btn-primary mb-3" onclick="goBack()"><i
             class="bi bi-arrow-left h2"></i></button>
         <div class="col-md-5 bg-light p-4 rounded mx-auto">
-            <h1 class="mb-4">{% if update %}Update{% else %}Add{% endif %} Book</h1>
+            <h1 class="mb-4">Kitob {% if update %}o'zgartirish{% else %}qo'shish{% endif %}</h1>
 
             <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                 {% csrf_token %}
@@ -39,38 +39,27 @@
                 {% endif %}
 
                 <div class="form-group">
-                    <label for="title">Name</label>
+                    <label for="title">Nomi</label>
                     <input type="text" class="form-control" id="title" name="title" value="{{ returned_data.title }}"
                         required>
                     <div class="invalid-feedback">
-                        Please enter the book title.
+                        Iltimos kitob nomini kiriting!
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="description">Description</label>
+                    <label for="description">Yozuvchi ismi</label>
                     <input type="text" class="form-control" id="description" name="description"
                         value="{{ returned_data.description }}">
                 </div>
 
-                <div class="form-group">
-                    {% if update %}
-                    <label for="publish_date">Old date:{{returned_data.publish_date}}</label><br>
-                    {% endif %}
-                    <label for="publish_date">Publish Date</label>
-                    <input type="date" class="form-control" id="publish_date" name="publish_date"
-                        value="{{ returned_data.publish_date.value }}" {% if not update %}required{% endif %}>
-                    <div class="invalid-feedback">
-                        Please enter the publish date.
-                    </div>
-                </div>
 
 
                 <div class="form-group mt-3">
-                    <label for="image">Image</label>
+                    <label for="image">Rasm</label>
                     <input type="file" class="form-control-file" id="image" name="image" value="{{ book_image }}" {% if not update %}required{% endif %}>
                     <div class="invalid-feedback">
-                        Please upload an image.
+                        Iltimos kitob rasmini kiriting!
                     </div>
                 </div>
                 {% if student_id and return_date and class_id %}

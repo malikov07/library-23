@@ -28,7 +28,17 @@ SECRET_KEY = getenv("PR_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://8344-188-113-215-217.ngrok-free.app',
+    'https://malikovbekzod.uz',
+]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+
+
 
 LOGIN_URL = "login"
 
@@ -42,6 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'import_export',
+    'django_extensions',
+    'sslserver',
     "home",
     "library",
     "students",

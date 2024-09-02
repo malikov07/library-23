@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Book,Book_author,Rental
+from .models import Book,Rental
 from students.models import Student
 from .forms import AddBookForm
 from django.db.models import Q,Count
@@ -25,15 +25,7 @@ class BooksListView(LoginRequiredMixin, View):
             serial_id__icontains=search
         )
 
-        # Filter books by author first name
-        author_books = Book.objects.filter(
-            id__in=Book_author.objects.filter(
-                author__first_name__icontains=search
-            ).values_list('book_id', flat=True)
-        )
         
-        # Combine the querysets and remove duplicates
-        books = (books | author_books).distinct()
         context = {
           "books": books,
           "search_value": search

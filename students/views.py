@@ -51,7 +51,6 @@ class ScanView(LoginRequiredMixin, View):
                     "serial_id":book.serial_id,
                     "title": book.title,
                     "description": book.description,
-                    "publish_date": book.publish_date.strftime('%d-%m-%Y')
                 }
                 response_data = {"success": True, "book_info": book_info}
             except Book.DoesNotExist:
@@ -67,7 +66,6 @@ class ScanView(LoginRequiredMixin, View):
                     "serial_id":book.serial_id,
                     "title": book.title,
                     "description": book.description,
-                    "publish_date": book.publish_date.strftime('%d-%m-%Y')
                 }
                 response_data = {"success": True, "book_info": book_info}
             except Book.DoesNotExist:
@@ -112,3 +110,21 @@ class StudentListView(LoginRequiredMixin, View):
         "count":count
     }
         return render(request, "students/students.html", context)
+    
+
+
+
+
+
+
+from .forms import PhotoForm
+
+def photo_upload(request):
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = PhotoForm()
+    return render(request, 'students/upload.html', {'form': form})

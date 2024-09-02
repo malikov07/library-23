@@ -20,11 +20,6 @@ class LoginPageView(View):
 
 
 
-class RegisterPageView(View):
-    def get(self, request):
-        return render(request, "users/register.html")
-
-
 class LogOutView(View):
     def get(self,request):
         logout(request)

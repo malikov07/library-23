@@ -72,13 +72,13 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ rental.book.title }}</td>
-                        <td>{{ rental.student.first_name }} {{ rental.student.last_name }}</td>
+                        <td><strong>{{rental.student.sinf}}</strong> - {{ rental.student.first_name }} {{ rental.student.last_name }}</td>
                         <td>{{ rental.created_date }}</td>
                         <td>{{ rental.return_date }}</td>
                         {% if rental.is_active %}
-                        <td><span class="badge badge-success bg-success">Active</span></td>
+                        <td><span class="badge badge-success bg-success">O'qilyapti</span></td>
                         {% else %}
-                        <td><span class="badge badge-secondary bg-secondary">Inactive</span></td>
+                        <td><span class="badge badge-secondary bg-secondary">Qaytarilgan</span></td>
                         {% endif %}
                     </tr>
                     {% empty %}

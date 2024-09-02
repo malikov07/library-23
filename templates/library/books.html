@@ -7,18 +7,18 @@
         <div class="row mb-4">
             <div class="col-12 col-md-6 mb-2 mb-md-0">
                 <form method="get" class="d-flex">
-                    <input type="text" name="search" value="{{ search_value }}" class="form-control me-2" placeholder="Search books...">
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <input type="text" name="search" value="{{ search_value }}" class="form-control me-2" placeholder="Kitob nomi yoki yozuvchi ismi...">
+                    <button type="submit" class="btn btn-primary">Qidirish</button>
                 </form>
             </div>
             <div class="col-12 col-md-6 d-flex justify-content-end">
                 <form action="{% url 'scan' %}" method="get" class="d-inline-block me-2">
                     <input type="hidden" name="function" value="search_book_by_scan">
-                    <button type="submit" class="btn btn-secondary">Search by Scanning</button>
+                    <button type="submit" class="btn btn-secondary">Skaner orqali qidirish</button>
                 </form>
                 <form method="get" action="{% url 'scan' %}" class="d-inline-block">
                     <input type="hidden" name="function" value="addbook">
-                    <button type="submit" class="btn btn-success">Add Book</button>
+                    <button type="submit" class="btn btn-success">Kitob qo'shish</button>
                 </form>
             </div>
         </div>
@@ -33,7 +33,8 @@
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ book.title }}</h5>
-                        <p class="card-text"><strong>Serial ID: {{ book.serial_id }}</strong></p>
+                        <p class="card-text mb-1"><strong>Muallif: </strong>{{ book.description }}</p>
+                        <p class="card-text"><strong>Serial ID: </strong>{{ book.serial_id }}</p>
                         <form action="{% url 'update_book' book.id %}">
                             <button type="submit" class="btn btn-success">Yangilash</button>
                         </form>

@@ -101,7 +101,7 @@
 
             function startScanning() {
                 let html5scanner = new Html5QrcodeScanner(
-                    "my-qr-reader", { fps: 10, qrbox: 200 }
+                    "my-qr-reader", { fps: 10, qrbox: 300 }
                 );
                 html5scanner.render(onScanSuccess);
             }
@@ -143,8 +143,7 @@
                                 <h5>Book Information</h5>
                                 <p><strong>Serial_id:</strong> ${data.book_info.serial_id}</p>
                                 <p><strong>Title:</strong> ${data.book_info.title}</p>
-                                <p><strong>Description:</strong> ${data.book_info.description}</p>
-                                <p><strong>Publication Date:</strong> ${data.book_info.publish_date}</p>`;
+                                <p><strong>Description:</strong> ${data.book_info.description}</p>`;
                         } else if (data.redirect) {
                             window.location.href = data.redirect_url;
                         } else if (data.bookDoesNotExist) {

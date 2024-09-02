@@ -62,16 +62,16 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <!-- Display student details here -->
-                                            <p>First name: {{ student.first_name }}</p>
-                                            <p>Last name: {{ student.last_name }}</p>
-                                            <p>Third name: {{ student.third_name }}</p>
-                                            <p>Birth date: {{ student.birth_date }}</p>
-                                            <p>Phone number: {{ student.phone_number }}</p>
-                                            <p>Address: {{ student.address }}</p>
+                                            <p><strong>Ism: </strong><i>{{ student.first_name }}</i></p>
+                                            <p><strong>Familiyas: </strong><i>{{ student.last_name }}</i></p>
+                                            <p><strong>Sharif: </strong><i>{{ student.third_name }}</i></p>
+                                            <p><strong>Tug'ulgan sana: </strong><i>{{ student.birth_date }}</i></p>
+                                            <p><strong>Tel. raqam: </strong><i>{{ student.phone_number }}</i></p>
+                                            <p><strong>Manzil: </strong><i>{{ student.address }}</i></p>
                                             <form method="get" action="{% url 'scan' %}" class="mb-2">
                                                 <input type="hidden" name="function" value="newrental">
                                                 <input type="hidden" name="student_id" value="{{student.id}}">
-                                                <button type="submit" class="col-12 btn btn-success">Add book</button>
+                                                <button type="submit" class="col-12 btn btn-success">Kitob qo'shish</button>
                                             </form>
                                         </div>
                                         <div class="col-12 col-md-9">
@@ -80,10 +80,10 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">#</th>
-                                                            <th scope="col">Book title</th>
-                                                            <th scope="col">Book Id</th>
-                                                            <th scope="col">Return date</th>
-                                                            <th scope="col">Created date</th>
+                                                            <th scope="col">Kitob nomi</th>
+                                                            <th scope="col">Kitob Id</th>
+                                                            <th scope="col">Qayt. sana</th>
+                                                            <th scope="col">Beril. sana</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -97,7 +97,7 @@
                                                         </tr>
                                                         {% empty %}
                                                         <tr>
-                                                            <td colspan="5">No borrowed books</td>
+                                                            <td colspan="5">Kitob ijaraga olmagan</td>
                                                         </tr>
                                                         {% endfor %}
                                                     </tbody>
