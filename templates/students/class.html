@@ -68,6 +68,7 @@
                                             <p><strong>Tug'ulgan sana: </strong><i>{{ student.birth_date }}</i></p>
                                             <p><strong>Tel. raqam: </strong><i>{{ student.phone_number }}</i></p>
                                             <p><strong>Manzil: </strong><i>{{ student.address }}</i></p>
+                                            <p><strong>Ball: </strong><i>{{ student.ball }}</i></p>
                                             <form method="get" action="{% url 'scan' %}" class="mb-2">
                                                 <input type="hidden" name="function" value="newrental">
                                                 <input type="hidden" name="student_id" value="{{student.id}}">
@@ -113,7 +114,7 @@
                                                     {% endfor %}
                                                 </select>
                                                 <input type="hidden" value="{{class_id}}" name="class_id">
-                                                <button type="submit" class="btn btn-danger">Obunani&nbsp;o'chirish</button>
+                                                <button type="submit" class="btn btn-success">Tugatish</button>
                                             </form>
                                             {% endif %}
                                         </div>

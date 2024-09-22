@@ -11,7 +11,7 @@ class BookAdmin(ImportExportModelAdmin):
 
 @admin.register(Rental)
 class RentalAdmin(ImportExportModelAdmin):
-    list_display = ('id', 'book', 'student', 'created_date', 'return_date', 'is_active')
-    list_filter = ('created_date', 'return_date', 'is_active')
+    list_display = ('id', 'book', 'student', 'created_date', 'return_date', 'status')
+    list_filter = ('created_date', 'return_date', 'status')
     search_fields = ('book__title', 'student__first_name', 'student__last_name')
     list_display_links = ('id', 'book', 'student')  # Make id, book, and student clickable

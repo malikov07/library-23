@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+<body>
+    <div class="container mt-5">
+        
+        <button class="btn btn-primary mb-3" onclick="goBack()"><i class="bi bi-arrow-left h2"></i></button>
+        <div class="col-md-6 bg-light p-4 rounded mx-auto">
+            <h1 class="mb-4">O'quvchi {% if update %}o'zgartirish{% else %}qo'shish{% endif %}</h1>
+
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                {% if text %}
+                <div class="alert alert-info" role="alert">
+                    <h2 class="h4">{{ text }}</h2>
+                </div>
+                {% endif %}
+
+                {% if update %}
+                <input type="hidden" class="form-control" id="student_id" name="student_id"
+                    value="{{ student.id }}" >
+                {% endif %}
+
+                {% if class_id %}
+                <input type="hidden" name="class_id" value="{{class_id}}">
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="first_name">Ism</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name"
+                        value="{{ student.first_name }}" required>
+                    <div class="invalid-feedback">
+                        Iltimos o'quvchining ismini kiriting!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="last_name">Familiya</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name"
+                        value="{{ student.last_name }}" required>
+                    <div class="invalid-feedback">
+                        Iltimos o'quvchining familiyasini kiriting!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="third_name">Otasining ismi</label>
+                    <input type="text" class="form-control" id="third_name" name="third_name"
+                        value="{{ student.third_name }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="birth_date">Tug'ilgan sana</label>
+                    <input type="date" class="form-control" id="birth_date" name="birth_date"
+                    value="{{ form.birth_date.value|date:'Y-m-d' }}">
+                </div>
+
+                <!-- <div class="form-group">
+                    <label for="sinf">Sinfi</label>
+                    <select class="form-control" id="sinf" name="sinf" required>
+                        <option value="">Tanlang</option>
+                        {% for sinf in sinf_choices %}
+                        <option value="{{ sinf.id }}" {% if student.sinf.id == sinf.id %}selected{% endif %}>
+                            {{ sinf }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        Iltimos sinfni tanlang!
+                    </div>
+                </div> -->
+
+                <div class="form-group">
+                    <label for="phone_number">Telefon raqami</label>
+                    <input type="text" class="form-control" id="phone_number" name="phone_number"
+                        value="{{ student.phone_number }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Manzil</label>
+                    <input type="text" class="form-control" id="address" name="address"
+                        value="{{ student.address }}">
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3">{% if update %}Yangilash{% else %}Qo'shish{% endif %}</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+
+</html>
+{% endblock %}

@@ -23,11 +23,12 @@ class Sinf(models.Model):
 class Student(models.Model):
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
-    third_name = models.CharField(max_length=60, null=True)
-    birth_date = models.DateField(null=True)
-    sinf = models.ForeignKey(Sinf, on_delete=models.SET_NULL, null=True)
-    phone_number = models.CharField(max_length=50, null=True)
-    address = models.CharField(max_length=250, null=True)
+    third_name = models.CharField(max_length=60, null=True, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    sinf = models.ForeignKey(Sinf, on_delete=models.SET_NULL, null=True, blank=True)
+    phone_number = models.CharField(max_length=50, null=True, blank=True)
+    address = models.CharField(max_length=250, null=True, blank=True)
+    ball = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.first_name + self.last_name

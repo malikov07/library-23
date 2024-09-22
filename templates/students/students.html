@@ -53,15 +53,8 @@
     }
 </style>
 
-<script>
-
-    function goBack() {
-        window.history.back();
-    }
-    </script>
 <div class="container overflow-hidden">
-    <button class="btn btn-primary mt-3" onclick="goBack()"><i
-        class="bi bi-arrow-left h2"></i></button>
+    <a style="color: white;" href="{% url 'library' %}"><button class="btn btn-primary mb-3 mt-3"><i class="bi bi-arrow-left h2"></i></button></a>
     <div class="row mb-3">
         <div class="col-sm-12">
             <div class="title-box text-center" data-aos="fade-up" data-aos-duration="1000">
@@ -86,14 +79,20 @@
                 <h2 class="accordion-header" id="heading{{ forloop.counter }}">
                     <button class="accordion-button collapsed p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
                         <div class="row text-center d-flex justify-content-between align-items-center w-100">
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-md-3 col-sm-6">
                                 <strong>#{{ forloop.counter }}</strong>
                             </div>
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-md-3 col-sm-6">
                                 {{ sinf }}-sinf
                             </div>
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-md-3 col-sm-6">
                                 {{ students|length }} ta o'quvchi
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <form action="{% url 'addstudent' %}">
+                                    <input type="hidden" name="class_id" value="{{sinf.id}}">
+                                    <input type="submit" class="btn btn-primary" value="O'quvchi qo'shish"/>
+                                </form>
                             </div>
                         </div>
                     </button>
@@ -111,6 +110,7 @@
                                         <th scope="col">Tugilgan sanasi</th>
                                         <th scope="col">Telefon raqam</th>
                                         <th scope="col">Address</th>
+                                        <th scope="col">O'zgartirish</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,6 +123,17 @@
                                         <td>{{ student.birth_date }}</td>
                                         <td>{{ student.phone_number }}</td>
                                         <td>{{ student.address }}</td>
+                                        <td>
+                                            
+                                            <form action="{% url 'updatestudent' %}" style="display: inline-block;">
+                                                <input type="hidden" name="student_id" value="{{student.id}}">
+                                                <button type="submit" class="btn btn-success" ><i class="bi bi-pencil-square"></i></button>
+                                            </form>
+                                            <form action="{% url 'deletestudent' student.id %}" style="display: inline-block;">
+                                                <button type="submit" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
+                                            </form>
+
+                                        </td>
                                     </tr>
                                     {% empty %}
                                     <tr>
@@ -186,6 +197,18 @@
                                 <tr>
                                     <th>Address</th>
                                     <td>{{ student.address }}</td>
+                                </tr>
+                                <tr>
+                                    <th>O'zgartirish</th>
+                                    <td>
+                                        <form action="{% url 'updatestudent' %}" style="display: inline-block;">
+                                            <input type="hidden" name="student_id" value="{{student.id}}">
+                                            <button type="submit" class="btn btn-success btn-sm" ><i class="bi bi-pencil-square"></i></button>
+                                        </form>
+                                        <form action="{% url 'deletestudent' student.id %}" style="display: inline-block;">
+                                            <button type="submit" class="btn btn-danger btn-sm  " ><i class="bi bi-trash"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

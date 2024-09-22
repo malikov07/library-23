@@ -19,16 +19,24 @@ class Book(models.Model):
     class Meta:
         ordering = ["-last_update","created_date"]
 
+class RentalStatus(models.TextChoices):
+    completed = ("c","O'qib qaytarilgan")
+    returned_without_reading = ("d","Bekor qilingan")
+    reading = ("r","O'qilyapti")
+
 
 class Rental(models.Model):
     book = models.ForeignKey(Book, on_delete=models.DO_NOTHING)
-    student = models.ForeignKey(Student, on_delete=models.DO_NOTHING)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     created_date = models.DateField(auto_now_add=True)
     return_date = models.DateField()
-    is_active = models.BooleanField(default=True)
+    status = models.CharField(max_length=20, choices=RentalStatus.choices, default=RentalStatus.reading)
+    last_update = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.book.title + ' -> ' + self.student.first_name
     
     class Meta:
-        ordering = ["-created_date"]
+        ordering = ["-id"]
+
+Score = 10

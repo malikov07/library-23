@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views import View
 from students.models import Sinf, Student
 from library.models import Book,Rental
+from .forms import StudentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from collections import defaultdict
 import json
@@ -25,7 +26,7 @@ class ClassView(LoginRequiredMixin, View):
         
         for student in students:
             rental = Rental.objects.filter(student=student)
-            rental = rental.filter(is_active = True)
+            rental = rental.filter(status = 'r')
             students_with_books.append((student, list(rental)))
 
         context = {
@@ -104,7 +105,7 @@ class StudentListView(LoginRequiredMixin, View):
         count = Student.objects.count()
         for student in students:
             students_by_class[student.sinf].append(student)
-        print(students_by_class)
+        
         context = {
         'students_by_class': dict(students_by_class),
         "count":count
@@ -112,9 +113,97 @@ class StudentListView(LoginRequiredMixin, View):
         return render(request, "students/students.html", context)
     
 
+class AddStudent(LoginRequiredMixin, View):
+    def get(self,request):
+        class_id = request.GET["class_id"]
+        context = {
+            "class_id":class_id,
+        }
+        return render(request,"students/addstudent.html",context)
+
+    def post(self,request):
+
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.sinf = Sinf.objects.get(id=request.POST["class_id"])
+            student.save()
+            return redirect("students")
+        else:
+            return render(request, "students/addstudent.html", {
+                "text": form.errors,
+                "class_id": request.POST["class_id"],
+            })
 
 
+        # first_name = request.POST["first_name"]
+        # last_name = request.POST["last_name"]
+        # third_name = request.POST["third_name"]
+        # birth_date = request.POST["birth_date"]
+        # phone_number = request.POST["phone_number"]
+        # address = request.POST["address"]
+        # sinf = Sinf.objects.get(id = request.POST["class_id"])
 
+        # new_student = Student.objects.create(
+        #     first_name=first_name,
+        #     last_name=last_name,
+        #     third_name=third_name,
+        #     birth_date=birth_date,
+        #     phone_number=phone_number,
+        #     address=address,
+        #     sinf=sinf
+        # )
+        # new_student.save()
+        # return redirect("students")
+
+    
+
+class UpdateStudent(LoginRequiredMixin, View):
+    def get(self,request):
+        student_id = request.GET["student_id"]
+        student = Student.objects.get(id=student_id)
+        context = {
+            "student":student,
+            "update":True,
+        }
+        return render(request,"students/addstudent.html",context)
+
+    def post(self,request):
+        student = Student.objects.get(id=request.POST["student_id"])
+
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        third_name = request.POST["third_name"]
+        birth_date = request.POST.get("birth_date",None)
+        phone_number = request.POST["phone_number"]
+        address = request.POST["address"]
+        
+
+        
+        student.first_name=first_name
+        student.last_name=last_name
+        student.third_name=third_name
+        if birth_date:
+            student.birth_date=birth_date
+        student.phone_number=phone_number
+        student.address=address
+        student.save()
+        return redirect("students")
+    
+class DeleteStudent(LoginRequiredMixin,View):
+    def get(self,request,id):
+        student = Student.objects.get(id = id)
+        context = {
+            "student":student
+        }
+        return render(request,"students/warning.html",context)
+
+    def post(self,request,id):
+        student = Student.objects.get(id = id)
+        student.delete()
+        return redirect("students")
+
+    
 
 
 from .forms import PhotoForm

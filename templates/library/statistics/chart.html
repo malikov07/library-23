@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Statistics</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="{% static 'old/assets/js/statistics.js' %}"></script>
+    <link href="{% static 'old/assets/css/bootstrap.css' %}" rel="stylesheet">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f2f2f8;
             color: #333;
             margin: 0;
             padding: 0;
@@ -34,15 +30,17 @@
             /* Adjust this value as needed */
         }
     </style>
-</head>
+
 
 <body>
     <div class="container">
-        <h1>Library Statistics</h1>
+        <a style="color: white;" href="{% url 'library' %}"><button class="btn btn-primary mt-3"><i
+            class="bi bi-arrow-left h2"></i></button></a>
+        <h1 class="my-5">Kutubxona statistikasi</h1>
         <div class="row mb-5">
             <!-- Line Chart -->
             <div class="col-md-8">
-                <canvas id="lineChart"></canvas>
+                <canvas  id="lineChart"></canvas>
             </div>
 
             <!-- Pie Chart -->
@@ -58,7 +56,7 @@
         <div class="row mb-5">
 
             <div class="col-md-12">
-                <h1>Students Rank</h1>
+                <h1>Top 5 o'quvchilar</h1>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -69,57 +67,35 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for student in top_students %}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark gsfdgsdfg sfgsd</td>
-                            <td>1</td>
-                            <td>68</td>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{student.first_name}} {{student.last_name}} {{student.third_name}}</td>
+                            <td>{{student.sinf}}</td>
+                            <td>{{student.ball}}</td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob sgdfgsfg  sgfdgs</td>
-                            <td>6</td>
-                            <td>34</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td >Larry the Bird sf</td>
-                            <td>11</td>
-                            <td>78</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
             <div class="col-md-12">
-                <h1>Classes Rank</h1>
+                <h1>Sinflar Darajalari</h1>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">Sinf</th>
+                            <th scope="col">Ball</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for sinf in classes_rank %}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{sinf}}</td>
+                            <td>{{sinf.total_ball}}</td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry the Bird</td>
-                            <td>@twitter</td>
-                            <td>@twitter</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -128,15 +104,39 @@
 
         <script>
             // Data for charts
-            const labels = ['January', 'February', 'March', 'April', 'May', 'June', "July", "August", "September"];
 
+            const monthTranslation = {
+                "January": "Yanvar",
+                "February": "Fevral",
+                "March": "Mart",
+                "April": "Aprel",
+                "May": "May",
+                "June": "Iyun",
+                "July": "Iyul",
+                "August": "Avgust",
+                "September": "Sentyabr",
+                "October": "Oktyabr",
+                "November": "Noyabr",
+                "December": "Dekabr"
+            };
+
+            // Translated labels for the chart
+            const labels = [
+                {% for entry in rentals_by_month %}
+                    monthTranslation["{{ entry.month|date:'F' }}"],
+                {% endfor %}
+            ];
             const lineChartData = {
                 labels: labels,
                 datasets: [{
-                    label: 'My First dataset',
-                    borderColor: 'rgb(255, 99, 132)',
+                    label: "O'qilgan kitoblar",
+                    borderColor: '#0078ff',
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    data: [0, 10, 5, 2, 20, 30, 45, 56, 67],
+                    data: [
+                        {% for entry in rentals_by_month %}
+                            {{ entry.total }},
+                        {% endfor %}
+                    ],
                     pointRadius: 10, // Increase this value to make points larger
                 }]
             };
@@ -160,37 +160,29 @@
             };
 
             const barChartData = {
-                labels: ['1-sinf', '2-sinf', '3-sinf', '4-sinf', '5-sinf', '6-sinf', '7-sinf', '8-sinf', '9-sinf', '10-sinf', '11-sinf'],
+                labels: [
+                    {% for sinf in sinf_ball_sum %}
+                        '{{sinf}}',
+                    {% endfor %}
+                ],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3, 8, 23, 8, 9, 11],
+                    label: 'Ball',
+                    data: [
+                        {% for sinf in sinf_ball_sum %}
+                            {{sinf.total_ball}},
+                        {% endfor %} 
+                    ],
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
+                        {% for color,i in colors %}
+                            '{{ color }}',
+                        {% endfor %}
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
+                        {% for color,i in colors %}
+                            '{{ i }}',  // Adjust the opacity for border
+                        {% endfor %}
                     ],
-                    borderWidth: 1
+                    borderWidth: 2
                 }]
             };
 
@@ -213,14 +205,13 @@
             };
 
             const pieChartData = {
-                labels: ['Red', 'Blue', 'Yellow'],
+                labels: ["Kitob o'qiyotganlar", "Kitob o'qimayotganlar"],
                 datasets: [{
-                    label: 'My First Dataset',
-                    data: [300, 50, 100],
+                    label: 'Taqqoslash',
+                    data: [{{r_percent}},{{nr_percent}}],
                     backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 205, 86)'
+                        'rgb(30, 255, 0, 0.4)',
+                        'rgba(255, 25, 0, 0.4)'
                     ],
                     hoverOffset: 4
                 }]
@@ -264,5 +255,5 @@
             });
         </script>
 </body>
+{% endblock %}
 
-</html>

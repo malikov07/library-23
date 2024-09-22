@@ -1,19 +1,52 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Book</title>
+    <style>
+        #camera-section {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-<script>
+        #photo-preview {
+            display: block;
+            margin: 10px auto;
+            max-width: 100%;
+            height: auto;
+        }
 
-    function goBack() {
-        window.history.back();
-    }
-</script>
+        #video {
+            display: none; /* Initially hide video */
+            margin: 10px auto;
+            max-width: 100%;
+            height: auto;
+        }
 
+        #canvas {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .btn {
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            #photo-preview {
+                max-height: 50vh; /* Limit max height on smaller screens */
+            }
+        }
+    </style>
+</head>
 <body>
     <div class="container mt-5">
-        
-        <button class="btn btn-primary mb-3" onclick="goBack()"><i
-            class="bi bi-arrow-left h2"></i></button>
+        <button class="btn btn-primary mb-3" onclick="goBack()"><i class="bi bi-arrow-left h2"></i></button>
         <div class="col-md-5 bg-light p-4 rounded mx-auto">
             <h1 class="mb-4">Kitob {% if update %}o'zgartirish{% else %}qo'shish{% endif %}</h1>
 
@@ -28,20 +61,17 @@
 
                 {% if update %}
                 <label for="serial_id">Serial ID</label>
-                <input type="text" class="form-control" id="serial_id" name="serial_id"
-                    value="{{ returned_data.serial_id }}" readonly>
+                <input type="text" class="form-control" id="serial_id" name="serial_id" value="{{ returned_data.serial_id }}" readonly>
                 {% else %}
                 <div class="form-group">
                     <label for="serial_id">Serial ID</label>
-                    <input type="text" class="form-control" id="serial_id" name="serial_id" value="{{ scanned_result }}"
-                        readonly>
+                    <input type="text" class="form-control" id="serial_id" name="serial_id" value="{{ scanned_result }}" readonly>
                 </div>
                 {% endif %}
 
                 <div class="form-group">
                     <label for="title">Nomi</label>
-                    <input type="text" class="form-control" id="title" name="title" value="{{ returned_data.title }}"
-                        required>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ returned_data.title }}" required>
                     <div class="invalid-feedback">
                         Iltimos kitob nomini kiriting!
                     </div>
@@ -49,19 +79,27 @@
 
                 <div class="form-group">
                     <label for="description">Yozuvchi ismi</label>
-                    <input type="text" class="form-control" id="description" name="description"
-                        value="{{ returned_data.description }}">
+                    <input type="text" class="form-control" id="description" name="description" value="{{ returned_data.description }}">
                 </div>
 
-
-
                 <div class="form-group mt-3">
-                    <label for="image">Rasm</label>
-                    <input type="file" class="form-control-file" id="image" name="image" value="{{ book_image }}" {% if not update %}required{% endif %}>
+                    <label for="image">Rasm (yuklash yoki surat olish)</label>
+                    <input type="file" class="form-control-file" id="image" name="image" value="{{ book_image }}">
                     <div class="invalid-feedback">
                         Iltimos kitob rasmini kiriting!
                     </div>
                 </div>
+
+                <!-- Camera capture section -->
+                <div id="camera-section" class="form-group mt-3">
+                    <button type="button" class="btn btn-secondary" id="open-camera" onclick="startCamera()">Open Camera</button>
+                    <button type="button" class="btn btn-secondary" id="take-photo" onclick="takePhoto()">Take a Photo</button>
+                    <video id="video" autoplay></video>
+                    <canvas id="canvas"></canvas>
+                    <input type="hidden" id="photo-input" name="photo_data">
+                    <img id="photo-preview" src="" alt="Photo Preview">
+                </div>
+
                 {% if student_id and return_date and class_id %}
                 <input type="hidden" name="student_id" value="{{student_id}}">
                 <input type="hidden" name="return_date" value="{{return_date}}">
@@ -74,7 +112,66 @@
     </div>
 
     <script>
-        // JavaScript for disabling form submissions if there are invalid fields
+        function goBack() {
+            window.history.back();
+        }
+
+        // Function to start the camera
+        function startCamera() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const photoInput = document.getElementById('photo-input');
+            const photoPreview = document.getElementById('photo-preview');
+
+            // Hide photo preview
+            photoPreview.style.display = 'none';
+
+            // Show video element
+            video.style.display = 'block';
+
+            // Start camera feed
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+                .then(stream => {
+                    video.srcObject = stream;
+                    video.onloadedmetadata = () => {
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                    };
+                })
+                .catch(err => console.error("Error accessing camera: ", err));
+        }
+
+        // Function to capture image from the camera
+        function takePhoto() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const photoInput = document.getElementById('photo-input');
+            const photoPreview = document.getElementById('photo-preview');
+
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas to data URL and set it as value for the hidden input
+            const photoData = canvas.toDataURL('image/png');
+            photoInput.value = photoData;
+
+            // Display the taken photo
+            photoPreview.src = photoData;
+            photoPreview.style.display = 'block';
+
+            // Hide video element
+            video.style.display = 'none';
+
+            // Stop video stream after photo is taken
+            const stream = video.srcObject;
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+            video.srcObject = null;
+        }
+    </script>
+
+    <script>
+        // JavaScript for form validation
         (function () {
             'use strict';
             window.addEventListener('load', function () {
@@ -92,6 +189,5 @@
         })();
     </script>
 </body>
-
 </html>
 {% endblock %}

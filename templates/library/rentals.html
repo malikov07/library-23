@@ -1,61 +1,105 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <style>
-        @media (max-width: 576px) {
-            .rental-table th, .rental-table td {
-                font-size: 14px;
-            }
-            td{
-                padding: 6px !important;
-            }
-            th{
-                padding: 6px !important;
-            }
+<style>
+
+    .desktop-layout ,
+    .mobile-layout  {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+        .desktop-layout {
+            display: block;
+        }
+        
+        .mobile-layout {
+            display: none;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .desktop-layout {
+            display: none;
+        }
+        
+        .mobile-layout {
+            display: block;
         }
 
-        @media (max-width: 400px) {
-            .rental-table th, .rental-table td {
-                font-size: 10px;
-            }
-            td{
-                padding: 4px !important;
-            }
-            th{
-                padding: 4px !important;
-            }
+       
+    }
+    @media (max-width: 576px) {
+
+        .rental-table th,
+        .rental-table td {
+            font-size: 14px;
         }
 
-        @media (max-width: 300px) {
-            .rental-table th, .rental-table td {
-                font-size: 2px;
-            }
-            td{
-                padding: 4px !important;
-            }
-            th{
-                padding: 4px !important;
-            }
+        td {
+            padding: 6px !important;
         }
-    </style>
+
+        th {
+            padding: 6px !important;
+        }
+    }
+
+    @media (max-width: 400px) {
+
+        .rental-table th,
+        .rental-table td {
+            font-size: 14px;
+        }
+
+        td {
+            padding: 4px !important;
+        }
+
+        th {
+            padding: 4px !important;
+        }
+    }
+
+    @media (max-width: 300px) {
+
+        .rental-table th,
+        .rental-table td {
+            font-size: 2px;
+        }
+
+        td {
+            padding: 4px !important;
+        }
+
+        th {
+            padding: 4px !important;
+        }
+    }
+</style>
 </head>
+
 <body>
     <!-- Main Content -->
     <div class="container mt-5 bg-light p-3 rounded">
-        <a style="color: white;" href="{% url 'library' %}"><button class="btn btn-primary mb-3"><i class="bi bi-arrow-left h2"></i></button></a>
+        <a style="color: white;" href="{% url 'library' %}"><button class="btn btn-primary mb-3"><i
+                    class="bi bi-arrow-left h2"></i></button></a>
         <h1 class="mb-4">Kitob Ijaralari</h1>
 
         <!-- Search Form -->
         <form method="GET" action="{% url 'rentals' %}" class="mb-4">
             <div class="input-group">
-                <input type="text" name="search" class="form-control rounded me-2" placeholder="O'quvchi ismi yoki kitob nomi" value="{{ search }}">
+                <input type="text" name="search" class="form-control rounded me-2"
+                    placeholder="O'quvchi ismi yoki kitob nomi" value="{{ search }}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit">Qidirish</button>
                 </div>
             </div>
         </form>
 
-        <div class="table-container">
+        <div class="table-container desktop-layout">
             <table class="table table-striped rental-table">
                 <thead>
                     <tr>
@@ -65,6 +109,7 @@
                         <th>Berilgan sana</th>
                         <th>Qayt. sana</th>
                         <th>Status</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,14 +117,45 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ rental.book.title }}</td>
-                        <td><strong>{{rental.student.sinf}}</strong> - {{ rental.student.first_name }} {{ rental.student.last_name }}</td>
+                        <td><strong>{{rental.student.sinf}}</strong> - {{ rental.student.first_name }} {{rental.student.last_name }}</td>
                         <td>{{ rental.created_date }}</td>
                         <td>{{ rental.return_date }}</td>
-                        {% if rental.is_active %}
-                        <td><span class="badge badge-success bg-success">O'qilyapti</span></td>
+                        {% if rental.status == 'r' %}
+                        <td><span class="badge badge-success bg-success">{{ rental.get_status_display }}</span></td>
+                        {% elif rental.status == 'c' %}
+                        <td><span class="badge badge-secondary bg-secondary">{{ rental.get_status_display }}</span></td>
+                        {% elif rental.status == 'd' %}
+                        <td><span class="badge badge-danger bg-danger">{{ rental.get_status_display }}</span></td>
                         {% else %}
-                        <td><span class="badge badge-secondary bg-secondary">Qaytarilgan</span></td>
+                        <td><span class="badge badge-warning bg-warning">Unknown Status</span></td>
                         {% endif %}
+
+                        {% if rental.status == 'r' %}
+                        <td>
+                            <div class="row">
+                                <div class="col-6 m-0 p-0">
+                                    <form method="post" action="{% url 'complete_rental' %}" class="m-0 p-0">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="rental_id" value="{{rental.id}}">
+                                        <button type="submit" class="p-0 btn"><i class="bi bi-check-square h3"></i></button>
+                                    </form>
+                                </div>
+                                <div class="col-6 m-0 p-0">
+                                    <form method="post" action="{% url 'cancel_rental' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="rental_id" value="{{rental.id}}">
+                                        <button type="submit" class="p-0 btn"><i class="bi bi-x-square h3"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+
+                            
+                        </td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+
                     </tr>
                     {% empty %}
                     <tr>
@@ -89,5 +165,84 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="table-container mobile-layout">
+            <table class="table table-bordered mb-3 table-striped rental-table">
+                <tbody>
+                    {% for rental in rentals %}
+                    <tr>
+                        <th style="background-color: rgb(189, 189, 189);">#</th>
+                        <td style="background-color: rgb(189, 189, 189);">{{ forloop.counter }}</td>
+                    </tr>
+                    <tr>
+                        <th>Kitob</th>
+                        <td>{{ rental.book.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>O'quvchi</th>
+                        <td>{{ rental.student.sinf }}-{{ rental.student.first_name }}{{ rental.student.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Berilgan sana</th>
+                        <td>{{ rental.created_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Qayt. sana</th>
+                        <td>+{{ rental.return_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        {% if rental.status == 'r' %}
+                        <td><span class="badge badge-success bg-success">{{ rental.get_status_display }}</span></td>
+                        {% elif rental.status == 'c' %}
+                        <td><span class="badge badge-secondary bg-secondary">{{ rental.get_status_display }}</span></td>
+                        {% elif rental.status == 'd' %}
+                        <td><span class="badge badge-danger bg-danger">{{ rental.get_status_display }}</span></td>
+                        {% else %}
+                        <td><span class="badge badge-warning bg-warning">Unknown Status</span></td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+
+                        {% if rental.status == 'r' %}
+                        <th>O'zgartirish</th>
+                        <td>
+                                    <form style="display: inline-block;" method="post" action="{% url 'complete_rental' %}" class="m-0 p-0 pe-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="rental_id" value="{{rental.id}}">
+                                        <button type="submit" class="p-0 btn"><i class="bi bi-check-square h3"></i></button>
+                                    </form>
+                                    <form style="display: inline-block;" method="post" action="{% url 'cancel_rental' %}"  class="m-0 p-0 pe-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="rental_id" value="{{rental.id}}">
+                                        <button type="submit" class="p-0 btn"><i class="bi bi-x-square h3"></i></button>
+                                    </form>
+                            
+
+                            
+                        </td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+            
     </div>
-{% endblock %}
+
+
+
+   
+    {% endblock %}
+
+
+
+
+
+
+
+
+
+    
